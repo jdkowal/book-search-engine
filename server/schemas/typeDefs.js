@@ -1,4 +1,48 @@
-const typeDefs = require('./typeDefs');
-const resolvers = require('./resolvers');
+const { gql } = require('apollo-server-express');
+// brings in graph ql 
+const typeDefs = gql`
+type User { 
+    _id: ID!
+    username: String!
+    email: String 
+    bookCount: Int 
+    savedBooks: [Book]
+}
 
-module.exports = { typeDefs, resolvers };
+
+type Book {
+    bookId: ID!
+    authors: [String]
+    description: String
+    image: String
+    link: String
+    title: String! 
+}
+
+type Auth {
+    token: ID! 
+    user: User
+}
+
+input BookInput {
+    authors: [String]
+    description: String! 
+    bookId: String! 
+    image: String
+    link: String
+    title: String! 
+}
+
+type Query {
+    
+}
+
+type Mutation {
+    login(email: String!, password: String!): Auth
+    addUser(username: String!, email: String!, password: String!): Auth
+    saveBook(bookId: ID!): User
+}
+
+`;
+
+module.exports = typeDefs
